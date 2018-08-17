@@ -1,0 +1,5 @@
+0x00000000	vspm_get_status	/home/diaohaiwei/linux/build/build/tmp/work/salvator_x-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL
+0x00000000	vspm_quit_driver	/home/diaohaiwei/linux/build/build/tmp/work/salvator_x-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL
+0x00000000	vspm_cancel_job	/home/diaohaiwei/linux/build/build/tmp/work/salvator_x-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL
+0x00000000	vspm_entry_job	/home/diaohaiwei/linux/build/build/tmp/work/salvator_x-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL
+0x00000000	vspm_init_driver	/home/diaohaiwei/linux/build/build/tmp/work/salvator_x-poky-linux/kernel-module-vspm/1.0-r0/git/vspm-module/files/vspm/drv/vspm	EXPORT_SYMBOL

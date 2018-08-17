@@ -1,0 +1,139 @@
+menu "PikeOS Support"
+
+config PIKEOS_HWVIRT
+	bool "PikeOS Hardware Virtualization support"
+	default n
+	depends on (ARM && CPU_V7) || ARM64
+	help
+	  Activate support for PikeOS hardware virtualization
+	  Platform. This will allow you to add drivers to
+	  communicate with the underlying PikeOS Manager.
+  
+config PIKEOS_HWVIRT_ARM
+	bool
+	depends on PIKEOS_HWVIRT && (ARM ||ARM64)
+	default y
+	select AUTO_ZRELADDR
+	select ARM_PATCH_PHYS_VIRT
+	select ARM_ARCH_TIMER
+	select ARM_GIC
+	select OF
+	select ARM_PSCI if (ARM && CPU_V7)
+	help
+	  Dummy option to select required kernel features
+	  when we are activated on ARM.
+
+config PIKEOS_VMM
+	tristate "PikeOS Virtualization Monitor"
+	default n
+	depends on PIKEOS_HWVIRT
+	select OF
+	help
+	  PikeOS Virtualization Monitor support.
+	  If selected this will provide the base functions
+	  to be able to discuss with an underlying PikeOS if
+	  present and a detection of PikeOS.
+
+config VMM_EARLYCON
+	tristate "Early Console on PikeOS Virtualization"
+	default n
+	depends on PIKEOS_HWVIRT
+	select PIKEOS_VMM
+	help
+	  Activate an early console to debug Linux boot. Use earlyprintk=hvc
+	  to activate the earlyconsole over the PikeOS HWVIRT.
+
+config VMM_BYPASS
+	tristate "Bypass driver to access Forbidden registers"
+	depends on PIKEOS_HWVIRT
+	select PIKEOS_VMM
+	default n
+	help
+	  Activate bypass VMM driver that can be used to
+	  access something forbidden to a guest (if the
+	  given register are accessible to the manager).
+
+config VMM_VMAPI
+	tristate "VMAPI driver to access some PikeOS functions"
+	depends on PIKEOS_HWVIRT
+	select PIKEOS_VMM
+	default n
+	help
+	  Activate VMAPI VMM driver that can be used to
+	  run some PikeOS functions (stop/start partitions
+	  or the target, change scheduling scheme) using
+	  the file /proc/vmapi or /sys/vmapi/command.
+
+config VMM_P4BUS
+	tristate "P4 Bus on PikeOS Virtualization"
+	depends on PIKEOS_HWVIRT
+	select PIKEOS_VMM
+	default n
+	help
+	  Activate support for PikeOS virtual bus on 
+	  PikeOS virtualization.
+	  
+config VMM_ENUMERATE
+	bool "VMM and P4 Bus device Manual Enumeration"
+	depends on PIKEOS_HWVIRT
+	select PIKEOS_VMM
+	default n
+	help
+	  Force enumerating VMM and P4Bus devices manually
+	  instead of using DTB. This is required when there
+	  is no DTB support in your kernel or if the BSP is
+	  not correctly enumerating the vmm part of the tree.
+	  
+config P4BUS_VMCHAR
+	tristate "Character devices on P4 Bus"
+	depends on VMM_P4BUS
+	default n
+	help
+	  Activate support for character devices on P4 Bus.
+	  
+config P4BUS_VMTTY
+	tristate "tty devices on P4 Bus"
+	depends on VMM_P4BUS
+	select SERIAL_CORE
+	default n
+	help
+	  Activate support for tty devices on P4 Bus.
+	  
+config P4BUS_VMTTY_CONSOLE
+	bool "console over P4 bus VMTTY"
+	depends on P4BUS_VMTTY
+	select SERIAL_CORE_CONSOLE
+	default n
+	help
+	  Activate support for console over P4 Bus VMTTY.
+	  
+config P4BUS_VMNET
+	tristate "Network devices on P4 Bus"
+	depends on VMM_P4BUS
+	depends on NET
+	default n
+	help
+	  Activate support for network devices on P4 Bus.
+	  
+config P4BUS_VMNET_MAC_ADDR_PREFIX
+    int "Mac Address prefix for vmnet device"
+    depends on P4BUS_VMNET
+    default 1
+    range 1 32767
+    help
+      Set a specific mac address prefix for VMNET devices
+
+      This prefix will be used to build vmnet mac addresses for all vmnet devices
+      
+      range 1 to 32767
+
+config P4BUS_VMBLOCK
+	tristate "Block devices on P4 Bus devices"
+	depends on VMM_P4BUS
+	depends on BLOCK
+	default n
+	help
+	  Activate support for block devices on P4 Bus.
+	
+endmenu
+
